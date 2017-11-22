@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -159,53 +158,41 @@ public class Eleve {
 				return (int) liste.stream().filter(Eleve::isPassing).count();
 			}
 			
-		//Mention
-			public static String getGroup (double average) {
-			    if (average >= 12 && average < 14) {
-			        return "Mention AB";
-			    } else if(average >= 14 && average < 16) {
-			        return "Mention B";
-			    } else if (average >= 16) {
-			        return "Mention TB";
-			    } else {
-			        return "No mention";
-			    }
-			}
-			
-			
+		//Mention	
 			//Java 7
-			public static HashMap<String, List<Eleve>> getMentions(List<Eleve> liste){
+			public static HashMap<Mention, List<Eleve>> getMentions(List<Eleve> liste){
 				//creation de la HashMap qui sera rempli et renvoyé
-				HashMap<String, List<Eleve>> listeMentions = new HashMap<String, List<Eleve>>();
+				HashMap<Mention, List<Eleve>> listeMentions = new HashMap<Mention, List<Eleve>>();
 				
 				//Création des listes de mention qui contiennent les éléves
-				List<Eleve> noMention = new ArrayList<Eleve>();
+				List<Eleve> mentionBof = new ArrayList<Eleve>();
 				List<Eleve> mentionAB = new ArrayList<Eleve>();
 				List<Eleve> mentionB  = new ArrayList<Eleve>();
 				List<Eleve> mentionTB = new ArrayList<Eleve>();
 				
 				//Remplissage des liste de mentions avec la liste d'eleve qu'on passe en parametre de la fonction
 				for (Eleve eleve: liste) {
-					if (eleve.getGroup(eleve.getAverage()) == "Mention AB") {mentionAB.add(eleve);}
-					else if(eleve.getGroup(eleve.getAverage()) == "Mention B") {mentionB.add(eleve);}
-					else if (eleve.getGroup(eleve.getAverage()) == "Mention TB") {mentionTB.add(eleve);}
-					else{noMention.add(eleve);}
+					if (Mention.find(eleve.getAverage()).equals(Mention.ASSEZ_BIEN)) {mentionAB.add(eleve);}
+					else if(Mention.find(eleve.getAverage()).equals(Mention.BIEN)) {mentionB.add(eleve);}
+					else if (Mention.find(eleve.getAverage()).equals(Mention.TRES_BIEN)) {mentionTB.add(eleve);}
+					else{mentionBof.add(eleve);}
 				}
 				
 				//Remplissage de la map avec les liste des mentions préalablement remplis
-				listeMentions.put("No mention", noMention);
-				listeMentions.put("Mention AB", mentionAB);	
-				listeMentions.put("Mention B",  mentionB);
-				listeMentions.put("Mention TB", mentionTB);
+				listeMentions.put(Mention.BOF, mentionBof);
+				listeMentions.put(Mention.ASSEZ_BIEN, mentionAB);	
+				listeMentions.put(Mention.BIEN,  mentionB);
+				listeMentions.put(Mention.TRES_BIEN, mentionTB);
 			
 				return listeMentions;
 			}
+			
 			
 			//Java 8
-			public static Map<String, List<Eleve>> getMentions8(List<Eleve> liste){
-				Map<String, List<Eleve>> listeMentions =
+			public static Map<Object, List<Eleve>> getMentions8(List<Eleve> liste){
+				Map<Object, List<Eleve>> listeMentions =
 					    liste.stream()
-					         .collect(Collectors.groupingBy(e -> getGroup(e.getAverage())));
+					         .collect(Collectors.groupingBy(e -> Mention.find(e.average)));
 				return listeMentions;
 			}
-	} 
+	}
