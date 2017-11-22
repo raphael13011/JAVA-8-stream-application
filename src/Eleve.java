@@ -192,7 +192,7 @@ public class Eleve {
 			public static Map<Mention, List<Eleve>> getMentions8(List<Eleve> liste){
 				Map<Mention, List<Eleve>> listeMentions =
 					    liste.stream()
-					         .collect(Collectors.groupingBy(e -> Mention.find(e.average)));
+					    	.collect(Collectors.groupingBy(x -> Mention.find(x.average)));
 				return listeMentions;
 			}
 	}
