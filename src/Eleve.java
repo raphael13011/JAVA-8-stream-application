@@ -189,8 +189,8 @@ public class Eleve {
 			
 			
 			//Java 8
-			public static Map<Object, List<Eleve>> getMentions8(List<Eleve> liste){
-				Map<Object, List<Eleve>> listeMentions =
+			public static Map<Mention, List<Eleve>> getMentions8(List<Eleve> liste){
+				Map<Mention, List<Eleve>> listeMentions =
 					    liste.stream()
 					         .collect(Collectors.groupingBy(e -> Mention.find(e.average)));
 				return listeMentions;
